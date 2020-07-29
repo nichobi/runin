@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+
+if [ "$1" == "--help" ] || [ "$1" == "-h" ] ; then
+  echo "$(basename "$0") [-h, --help] TERMINAL COMMAND...
+
+Run COMMAND... in the specified TERMINAL, while preserving pipes for COMMAND
+
+    -h, --help  show this help text"
+  exit
+fi
+
+stdin=$(cat)
+dir=$(mktemp -d)
+inpipe=$dir/stdin
+mkfifo "$inpipe"
+echo "$stdin" > $inpipe &
+outpipe=$dir/stdout
+mkfifo "$outpipe"
+terminal=$1; shift
+$terminal -e $SHELL -c 'cat '$inpipe'|'"$@"'>'$outpipe &
+cat $outpipe
+rm $inpipe
+rm $outpipe
+rmdir $dir
+
