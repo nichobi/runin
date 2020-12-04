@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ "$1" == "--help" ] || [ "$1" == "-h" ] ; then
+if [ "$1" = "--help" ] || [ "$1" = "-h" ] ; then
   echo "$(basename "$0") [-h, --help] TERMINAL COMMAND...
 
 Run COMMAND... in the specified TERMINAL, while preserving pipes for COMMAND
