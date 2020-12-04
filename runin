@@ -13,13 +13,13 @@ stdin=$(cat)
 dir=$(mktemp -d)
 inpipe=$dir/stdin
 mkfifo "$inpipe"
-echo "$stdin" > $inpipe &
+echo "$stdin" > "$inpipe" &
 outpipe=$dir/stdout
 mkfifo "$outpipe"
 terminal=$1; shift
-$terminal -e $SHELL -c 'cat '$inpipe'|'"$@"'>'$outpipe &
-cat $outpipe
-rm $inpipe
-rm $outpipe
-rmdir $dir
+$terminal -e "$SHELL" -c 'cat '"$inpipe"'|'"$*"'>'"$outpipe" &
+cat "$outpipe"
+rm "$inpipe"
+rm "$outpipe"
+rmdir "$dir"
 
